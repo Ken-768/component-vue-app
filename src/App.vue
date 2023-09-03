@@ -1,10 +1,19 @@
 <script setup>
 import Hello from './components/Hello.vue';
+import Child from './components/Child.vue';
+import { ref } from 'vue';
+
+const name = ref('John');
+const changeName = () => {
+  name.value = 'Jane';
+}
 </script>
 
 <template>
   <h1>Vue 3 入門</h1>
-  <Hello message="propsの使い方" />
+  <Hello message="propsの使い方" :name="name" v-bind:price="1000" v-bind:is-admin="false" />
+  <Child id="main" style="color:red" class="active" />
+  <button @click="changeName">Change Name</button>
 </template>
 
 <style scoped>
