@@ -1,19 +1,35 @@
 <script setup>
 import Hello from './components/Hello.vue';
-import Child from './components/Child.vue';
+import Child1 from './components/Child1.vue';
+import Input from './components/Input.vue';
+import Child2 from './components/Child2.vue';
 import { ref } from 'vue';
 
 const name = ref('John');
 const changeName = () => {
   name.value = 'Jane';
 }
+//$emit
+const handleEvent = (newName) => {
+  name.value = newName;
+}
+const address = ref('');
 </script>
 
 <template>
   <h1>Vue 3 入門</h1>
   <Hello message="propsの使い方" :name="name" v-bind:price="1000" v-bind:is-admin="false" />
-  <Child id="main" style="color:red" class="active" />
+  <Child1 id="main" style="color:red" class="active" />
   <button @click="changeName">Change Name</button>
+  <Child1 v-on:notification="handleEvent" />
+  <Child1 @changeNameEvent="handleEvent" :name="name" />
+  <p>name: {{ name }}</p>
+  <p>address:{{ address }}</p>
+  <input v-model="name" />
+  <input v-model="address" />
+  <!-- <Input :model-value="name" @update:model-value="name = $event" />
+  <Input :model-value="address" @update:model-value="address = $event" /> -->
+  <Child2 @changeNameEvent="handleEvent" :name="name" />
 </template>
 
 <style scoped>
