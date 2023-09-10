@@ -3,6 +3,7 @@ import Hello from './components/Hello.vue';
 import Child1 from './components/Child1.vue';
 import Input from './components/Input.vue';
 import Child2 from './components/Child2.vue';
+import User from './components/User.vue';
 import { ref } from 'vue';
 
 const name = ref('John');
@@ -30,6 +31,26 @@ const address = ref('');
   <!-- <Input :model-value="name" @update:model-value="name = $event" />
   <Input :model-value="address" @update:model-value="address = $event" /> -->
   <Child2 @changeNameEvent="handleEvent" :name="name" />
+  <!-- slot -->
+  <User>
+    <!-- <template v-slot:title><h1>ユーザ情報</h1></template>
+    <template v-slot:content>
+      <div>
+        <div>John Doe</div>
+        <div>Jane Doe</div>
+      </div>
+    </template>
+    <template v-slot:actions><button>ユーザ追加</button></template>
+    <template v-slot:header="{message}">
+      <div>{{ message }}</div>
+    </template>
+    <template v-slot:default="{message, content}">
+      <div>{{ message }} / {{ content }}</div>
+    </template> -->
+    <template v-slot:default="{ user }">
+      <li>{{ user.name }}</li>
+    </template>
+  </User>
 </template>
 
 <style scoped>
