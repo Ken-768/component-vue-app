@@ -1,17 +1,82 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import Hello from './components/Hello.vue';
+import Child1 from './components/Child1.vue';
+import Input from './components/Input.vue';
+import Child2 from './components/Child2.vue';
+import User from './components/User.vue';
+import Tokyo from './components/Tokyo.vue';
+import Kyoto from './components/Kyoto.vue';
+import CompA from './components/CompA.vue';
+import { provide } from 'vue';
+import { computed, ref } from 'vue';
+
+const name = ref('John');
+const changeName = () => {
+  name.value = 'Jane';
+}
+//$emit
+const handleEvent = (newName) => {
+  name.value = newName;
+}
+const address = ref('');
+
+const city = ref('tokyo');
+const tabs = {
+  tokyo: Tokyo,
+  kyoto: Kyoto,
+}
+const tab = computed(() => tabs[city.value]);
+
+const addCount = () => {
+  count.value++;
+};
+const count = ref(0);
+provide('count', count);
+provide('addCount', addCount);
 </script>
 
 <template>
+  <h1>Vue 3 入門</h1>
+  <Hello message="propsの使い方" :name="name" v-bind:price="1000" v-bind:is-admin="false" />
+  <Child1 id="main" style="color:red" class="active" />
+  <button @click="changeName">Change Name</button>
+  <Child1 v-on:notification="handleEvent" />
+  <Child1 @changeNameEvent="handleEvent" :name="name" />
+  <p>name: {{ name }}</p>
+  <p>address:{{ address }}</p>
+  <input v-model="name" />
+  <input v-model="address" />
+  <!-- <Input :model-value="name" @update:model-value="name = $event" />
+  <Input :model-value="address" @update:model-value="address = $event" /> -->
+  <Child2 @changeNameEvent="handleEvent" :name="name" />
+  <!-- slot -->
+  <User>
+    <!-- <template v-slot:title><h1>ユーザ情報</h1></template>
+    <template v-slot:content>
+      <div>
+        <div>John Doe</div>
+        <div>Jane Doe</div>
+      </div>
+    </template>
+    <template v-slot:actions><button>ユーザ追加</button></template>
+    <template v-slot:header="{message}">
+      <div>{{ message }}</div>
+    </template>
+    <template v-slot:default="{message, content}">
+      <div>{{ message }} / {{ content }}</div>
+    </template> -->
+    <template v-slot:default="{ user }">
+      <li>{{ user.name }}</li>
+    </template>
+  </User>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <button @click="city = 'tokyo'">東京</button>
+    <button @click="city = 'kyoto'">京都</button>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <keep-alive> <component v-bind:is="tab"></component></keep-alive>
+
+  <CompA message="propsでデータ渡し" />
+
 </template>
 
 <style scoped>
