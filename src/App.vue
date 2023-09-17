@@ -4,7 +4,9 @@ import Child1 from './components/Child1.vue';
 import Input from './components/Input.vue';
 import Child2 from './components/Child2.vue';
 import User from './components/User.vue';
-import { ref } from 'vue';
+import Tokyo from './components/Tokyo.vue';
+import Kyoto from './components/Kyoto.vue';
+import { computed, ref } from 'vue';
 
 const name = ref('John');
 const changeName = () => {
@@ -15,6 +17,14 @@ const handleEvent = (newName) => {
   name.value = newName;
 }
 const address = ref('');
+
+const city = ref('tokyo');
+const tabs = {
+  tokyo: Tokyo,
+  kyoto: Kyoto,
+}
+const tab = computed(() => tabs[city.value]);
+const count = ref(0);
 </script>
 
 <template>
@@ -51,6 +61,12 @@ const address = ref('');
       <li>{{ user.name }}</li>
     </template>
   </User>
+  <div>
+    <button @click="city = 'tokyo'">東京</button>
+    <button @click="city = 'kyoto'">京都</button>
+  </div>
+  <keep-alive> <component v-bind:is="tab"></component></keep-alive>
+
 </template>
 
 <style scoped>
