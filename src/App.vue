@@ -6,6 +6,8 @@ import Child2 from './components/Child2.vue';
 import User from './components/User.vue';
 import Tokyo from './components/Tokyo.vue';
 import Kyoto from './components/Kyoto.vue';
+import CompA from './components/CompA.vue';
+import { provide } from 'vue';
 import { computed, ref } from 'vue';
 
 const name = ref('John');
@@ -24,7 +26,13 @@ const tabs = {
   kyoto: Kyoto,
 }
 const tab = computed(() => tabs[city.value]);
+
+const addCount = () => {
+  count.value++;
+};
 const count = ref(0);
+provide('count', count);
+provide('addCount', addCount);
 </script>
 
 <template>
@@ -66,6 +74,8 @@ const count = ref(0);
     <button @click="city = 'kyoto'">京都</button>
   </div>
   <keep-alive> <component v-bind:is="tab"></component></keep-alive>
+
+  <CompA message="propsでデータ渡し" />
 
 </template>
 
